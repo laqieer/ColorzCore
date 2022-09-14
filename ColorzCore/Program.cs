@@ -275,7 +275,7 @@ namespace ColorzCore
             if (EAOptions.Instance.nomess)
                 log.IgnoredKinds.Add(Log.MsgKind.MESSAGE);
 
-            EAInterpreter myInterpreter = new EAInterpreter(output, game, rawsFolder.FromJust, rawsExtension, inStream, inFileName, log);
+            EAInterpreter myInterpreter = new EAInterpreter(output, game, rawsFolder.FromJust, true, rawsExtension, inStream, inFileName, log);
 
             ExecTimer.Timer.AddTimingPoint(ExecTimer.KEY_RAWPROC);
 

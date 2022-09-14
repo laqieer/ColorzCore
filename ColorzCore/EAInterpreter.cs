@@ -21,14 +21,14 @@ namespace ColorzCore
         private Log log;
         private IOutput output;
 
-        public EAInterpreter(IOutput output, string game, string rawsFolder, string rawsExtension, Stream sin, string inFileName, Log log)
+        public EAInterpreter(IOutput output, string game, string rawsFolder, bool isRawsFolderRecursive, string rawsExtension, Stream sin, string inFileName, Log log)
         {
             this.game = game;
             this.output = output;
 
             try
             {
-                allRaws = ProcessRaws(game, ListAllRaws(rawsFolder, rawsExtension));
+                allRaws = ProcessRaws(game, ListAllRaws(rawsFolder, isRawsFolderRecursive, rawsExtension));
             }
             catch (RawReader.RawParseException e)
             {
@@ -153,10 +153,10 @@ namespace ColorzCore
             return true;
         }
 
-        private static IEnumerable<Raw> LoadAllRaws(string rawsFolder, string rawsExtension)
+        private static IEnumerable<Raw> LoadAllRaws(string rawsFolder, bool isRawsFolderRecursive, string rawsExtension)
         {
             var directoryInfo = new DirectoryInfo(rawsFolder);
-            var files = directoryInfo.GetFiles("*" + rawsExtension, SearchOption.AllDirectories);
+            var files = directoryInfo.GetFiles("*" + rawsExtension, isRawsFolderRecursive ? SearchOption.AllDirectories: SearchOption.TopDirectoryOnly);
 
             foreach (FileInfo fileInfo in files)
             {
@@ -166,9 +166,9 @@ namespace ColorzCore
             }
         }
 
-        private static IList<Raw> ListAllRaws(string rawsFolder, string rawsExtension)
+        private static IList<Raw> ListAllRaws(string rawsFolder, bool isRawsFolderRecursive, string rawsExtension)
         {
-            return new List<Raw>(LoadAllRaws(rawsFolder, rawsExtension));
+            return new List<Raw>(LoadAllRaws(rawsFolder, isRawsFolderRecursive, rawsExtension));
         }
 
         private static Dictionary<string, IList<Raw>> ProcessRaws(string game, IList<Raw> allRaws)
