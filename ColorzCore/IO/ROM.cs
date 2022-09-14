@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorzCore.IO
 {
-    class ROM : IOutput
+    public class ROM : IOutput
     {
         private BufferedStream myStream;
         private byte[] myData;

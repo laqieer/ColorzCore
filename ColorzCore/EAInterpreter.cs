@@ -12,7 +12,7 @@ using System.Linq;
 namespace ColorzCore
 {
     //Class to excapsulate all steps in EA script interpretation.
-    class EAInterpreter
+    public class EAInterpreter
     {
         private Dictionary<string, IList<Raw>> allRaws;
         private EAParser myParser;
