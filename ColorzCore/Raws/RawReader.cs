@@ -83,7 +83,7 @@ namespace ColorzCore.Raws
             {
                 while (!reader.EndOfStream)
                 {
-                    Raw raw = null;
+                    Raw? raw = null;
 
                     try
                     {
@@ -103,7 +103,7 @@ namespace ColorzCore.Raws
         {
             // Since the writer of the raws is expected to know what they're doing, I'm going to be a lot more lax with error messages and graceful failure.
 
-            string rawLine;
+            string? rawLine;
 
             do
             {
@@ -180,7 +180,7 @@ namespace ColorzCore.Raws
                 if (!char.IsWhiteSpace((char)next))
                     break;
 
-                string line = source.ReadLine();
+                string? line = source.ReadLine();
 
                 if (string.IsNullOrEmpty(line) || line.Trim().Length == 0)
                     continue;
@@ -348,7 +348,7 @@ namespace ColorzCore.Raws
                         name = withoutDash;
                     }
 
-                    if (FLAG_ALIAS_MAP.TryGetValue(name, out string realName))
+                    if (FLAG_ALIAS_MAP.TryGetValue(name, out string? realName))
                     {
                         name = realName;
                     }
@@ -380,9 +380,9 @@ namespace ColorzCore.Raws
                 LineNumber = 0;
             }
 
-            public string ReadLine()
+            public string? ReadLine()
             {
-                string line = reader.ReadLine();
+                string? line = reader.ReadLine();
 
                 if (line != null)
                     LineNumber = LineNumber + 1;
