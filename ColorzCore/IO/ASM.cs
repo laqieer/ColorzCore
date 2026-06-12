@@ -6,7 +6,7 @@ using ColorzCore.Interpreter;
 
 namespace ColorzCore.IO
 {
-    class ASM : IOutput
+    public class ASM : IOutput
     {
         private StreamWriter asmStream, ldsStream;
 
