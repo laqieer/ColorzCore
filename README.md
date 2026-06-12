@@ -1,4 +1,9 @@
 # ColorzCore
+
+[![CI](https://github.com/laqieer/ColorzCore/actions/workflows/ci.yml/badge.svg)](https://github.com/laqieer/ColorzCore/actions/workflows/ci.yml)
+[Latest build artifacts](https://github.com/laqieer/ColorzCore/actions/workflows/ci.yml) ·
+[Latest release](https://github.com/laqieer/ColorzCore/releases/latest)
+
 A rewriting of Core.exe for [Event Assembler](https://github.com/TimoVesalainen/Event-Assembler).
 
 # Language Overview
