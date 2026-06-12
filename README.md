@@ -65,3 +65,16 @@ Pointer(MyLabel)
 # AA Mode
 
 Output assembly source file and linker script for building with gcc tool chain rather than write to ROM directly.
+
+This is the mode to use when integrating Event Assembler-style sources with a decomp
+project. For example:
+
+```sh
+ColorzCore AA FE8 -input:patch.event -output:patch.s
+arm-none-eabi-as patch.s -o patch.o
+```
+
+AA mode writes a GAS assembly file plus a `.lds` linker-script fragment, so the output can
+be assembled and linked by a decomp build instead of patching a finished ROM. Combine it
+with `--nocash-sym` / `-symOutput` when you also want a no$gba-compatible symbol file for
+debugging.

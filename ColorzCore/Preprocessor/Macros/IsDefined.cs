@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using ColorzCore.DataTypes;
 using ColorzCore.Lexer;
+using ColorzCore.Parser;
 
-namespace ColorzCore.Parser.Macros
+namespace ColorzCore.Preprocessor.Macros
 {
     class IsDefined : BuiltInMacro
     {
@@ -14,7 +15,7 @@ namespace ColorzCore.Parser.Macros
             ParentParser = parent;
         }
 
-        public override IEnumerable<Token> ApplyMacro(Token head, IList<IList<Token>> parameters, ImmutableStack<Closure> scopes)
+        public override IEnumerable<Token> ApplyMacro(Token head, IList<IList<Token>> parameters)
         {
             if (parameters[0].Count != 1)
             {
@@ -46,12 +47,12 @@ namespace ColorzCore.Parser.Macros
             return ParentParser.Definitions.ContainsKey(name) || ParentParser.Macros.ContainsName(name);
         }
 
-        protected static Token MakeTrueToken(DataTypes.Location location)
+        protected static Token MakeTrueToken(Location location)
         {
             return new Token(TokenType.NUMBER, location, "1");
         }
 
-        protected static Token MakeFalseToken(DataTypes.Location location)
+        protected static Token MakeFalseToken(Location location)
         {
             return new Token(TokenType.NUMBER, location, "0");
         }

@@ -3,5 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
+    <LangVersion>9</LangVersion>
+    <BaseOutputPath>bin/Core</BaseOutputPath>
   </PropertyGroup>
 </Project>

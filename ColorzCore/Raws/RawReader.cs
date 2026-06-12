@@ -215,25 +215,25 @@ namespace ColorzCore.Raws
                 ? flags[FLAG_ALIGNMENT].Values.GetLeft[0].ToInt()
                 : 4;
 
-            Maybe<int> listTerminator = flags.ContainsKey(FLAG_LIST_TERMINATOR)
-                ? (Maybe<int>)new Just<int>(flags[FLAG_LIST_TERMINATOR].Values.GetLeft[0].ToInt())
-                : new Nothing<int>();
+            int? listTerminator = flags.ContainsKey(FLAG_LIST_TERMINATOR)
+                ? flags[FLAG_LIST_TERMINATOR].Values.GetLeft[0].ToInt()
+                : null;
 
-            if (!listTerminator.IsNothing && code != 0)
+            if (listTerminator != null && code != 0)
             {
                 throw new RawParseException("TerminatingList with code nonzero.", source.FileName, lineNumber);
             }
 
             bool isRepeatable = flags.ContainsKey(FLAG_REPEATABLE);
 
-            if ((isRepeatable || !listTerminator.IsNothing) && (parameters.Count > 1) && fixedParams.Count > 0)
+            if ((isRepeatable || listTerminator != null) && (parameters.Count > 1) && fixedParams.Count > 0)
             {
                 throw new RawParseException("Repeatable or terminatingList code with multiple parameters or fixed parameters.", source.FileName, lineNumber);
             }
 
             // HACK: support terminating lists that have a code size of 0 (ugh)
 
-            if (!listTerminator.IsNothing)
+            if (listTerminator != null)
             {
                 foreach (var param in parameters)
                     size = Math.Max(size, param.Position + param.Length);
@@ -323,7 +323,7 @@ namespace ColorzCore.Raws
 
                     var withoutDash = flag.Substring(1);
 
-                    var name = string.Empty;
+                    string name;
                     var value = new Flag();
 
                     if (withoutDash.Contains(':'))
@@ -365,7 +365,7 @@ namespace ColorzCore.Raws
             // Helper wrapper class for reading lines from file while counting them
             // That way we can print line number in error messages
 
-            private StreamReader reader;
+            private readonly StreamReader reader;
 
             public string FileName { get; }
             public int LineNumber { get; private set; }
@@ -385,7 +385,7 @@ namespace ColorzCore.Raws
                 string? line = reader.ReadLine();
 
                 if (line != null)
-                    LineNumber = LineNumber + 1;
+                    LineNumber++;
 
                 return line;
             }

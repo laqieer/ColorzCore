@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using ColorzCore.DataTypes;
 using ColorzCore.Lexer;
+using ColorzCore.Parser;
 
-namespace ColorzCore.Parser.Macros
+namespace ColorzCore.Preprocessor.Macros
 {
     class AddToPool : BuiltInMacro
     {
@@ -13,18 +14,18 @@ namespace ColorzCore.Parser.Macros
          * AddToPool(tokens..., alignment): adds token to pool and make sure pooled tokens are aligned given alignment        
          */
 
-        public EAParser ParentParser { get; private set; }
+        public Pool Pool { get; }
 
-        public AddToPool(EAParser parent)
+        public AddToPool(Pool pool)
         {
-            ParentParser = parent;
+            Pool = pool;
         }
 
-        public override IEnumerable<Token> ApplyMacro(Token head, IList<IList<Token>> parameters, ImmutableStack<Closure> scopes)
+        public override IEnumerable<Token> ApplyMacro(Token head, IList<IList<Token>> parameters)
         {
             List<Token> line = new List<Token>(6 + parameters[0].Count);
 
-            string labelName = ParentParser.Pool.MakePoolLabelName();
+            string labelName = Pool.MakePoolLabelName();
 
             if (parameters.Count == 2)
             {
@@ -44,7 +45,7 @@ namespace ColorzCore.Parser.Macros
             line.AddRange(parameters[0]);
             line.Add(new Token(TokenType.NEWLINE, head.Location, "\n"));
 
-            ParentParser.Pool.Lines.Add(new Pool.PooledLine(scopes, line));
+            Pool.Lines.Add(new Pool.PooledLine(line));
 
             yield return new Token(TokenType.IDENTIFIER, head.Location, labelName);
         }
