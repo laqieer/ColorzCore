@@ -127,11 +127,12 @@ Create `Tests/test_test_runner.py`:
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from ea_test import run_tests
+from ea_test import run_tests as run_test_cases
+from run_tests import main
 
 
 class RunTestsStatusTests(unittest.TestCase):
@@ -140,7 +141,7 @@ class RunTestsStatusTests(unittest.TestCase):
         passing_test.name = "passing"
         passing_test.run_test.return_value = True
 
-        self.assertIs(run_tests(Mock(), [passing_test]), True)
+        self.assertIs(run_test_cases(Mock(), [passing_test]), True)
 
     def test_returns_false_when_any_test_fails(self):
         passing_test = Mock(name="passing_test")
@@ -150,7 +151,15 @@ class RunTestsStatusTests(unittest.TestCase):
         failing_test.name = "failing"
         failing_test.run_test.return_value = False
 
-        self.assertIs(run_tests(Mock(), [passing_test, failing_test]), False)
+        self.assertIs(run_test_cases(Mock(), [passing_test, failing_test]), False)
+
+    @patch("run_tests.run_tests", return_value=True)
+    def test_main_returns_zero_when_every_test_passes(self, run_tests_mock):
+        self.assertEqual(main(["run_tests.py", "ColorzCore.exe"]), 0)
+
+    @patch("run_tests.run_tests", return_value=False)
+    def test_main_returns_one_when_any_test_fails(self, run_tests_mock):
+        self.assertEqual(main(["run_tests.py", "ColorzCore.exe"]), 1)
 
 
 if __name__ == "__main__":
@@ -165,7 +174,7 @@ Run:
 python Tests\test_test_runner.py
 ```
 
-Expected: both assertions fail because `run_tests` currently returns `None`.
+Expected: all four assertions fail because `run_tests` and `main` currently return `None`.
 
 - [ ] **Step 3: Return the aggregate behavioral result**
 
@@ -235,7 +244,7 @@ python Tests\test_test_runner.py
 python Tests\run_tests.py ColorzCore\bin\Framework\Release\net48\ColorzCore.exe
 ```
 
-Expected: two unit tests pass; all 128 behavioral tests pass; both commands exit 0.
+Expected: four unit tests pass; all 128 behavioral tests pass; both commands exit 0.
 
 - [ ] **Step 6: Commit the test-runner fix**
 
@@ -341,7 +350,7 @@ python Tests\run_tests.py ColorzCore\bin\Framework\Release\net48\ColorzCore.exe
 git diff --check
 ```
 
-Expected: .NET 10 is selected, both projects build, publish output is under `bin/Core/Release/net10.0/publish`, two unit tests and all 128 behavioral tests pass, and the diff check is clean.
+Expected: .NET 10 is selected, both projects build, publish output is under `bin/Core/Release/net10.0/publish`, four unit tests and all 128 behavioral tests pass, and the diff check is clean.
 
 - [ ] **Step 3: Commit documentation and plan**
 
