@@ -35,6 +35,35 @@ jobs:
           Copy-Item ColorzCore/bin/Framework/Release/net48/* artifacts/package/net48 -Recurse -Force
           Copy-Item README.md artifacts/package/
 
+      - name: Verify modern publish payload
+        shell: pwsh
+        run: |
+          $appHostName = if ($IsWindows) { 'ColorzCore.exe' } else { 'ColorzCore' }
+          $requiredFiles = @(
+            $appHostName,
+            'ColorzCore.dll',
+            'ColorzCore.deps.json',
+            'ColorzCore.runtimeconfig.json'
+          )
+
+          foreach ($publishDir in @(
+            'ColorzCore/bin/Core/Release/net10.0',
+            'artifacts/package/net10'
+          )) {
+            foreach ($requiredFile in $requiredFiles) {
+              $requiredPath = Join-Path $publishDir $requiredFile
+              if (-not (Test-Path $requiredPath -PathType Leaf)) {
+                throw "Missing publish artifact: $requiredPath"
+              }
+            }
+          }
+
+          $appHostPath = Join-Path 'artifacts/package/net10' $appHostName
+          & $appHostPath A FE6 --help > $null
+          if ($LASTEXITCODE -ne 0) {
+            throw "Modern apphost smoke test failed with exit code $LASTEXITCODE."
+          }
+
       - name: Run tests
         if: runner.os == 'Windows'
         shell: pwsh
