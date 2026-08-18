@@ -35,6 +35,21 @@ jobs:
           Copy-Item ColorzCore/bin/Framework/Release/net48/* artifacts/package/net48 -Recurse -Force
           Copy-Item README.md artifacts/package/
 
+      - name: Verify modern Windows publish payload
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          foreach ($requiredPath in @(
+            'artifacts/package/net10/ColorzCore.exe',
+            'artifacts/package/net10/ColorzCore.dll',
+            'artifacts/package/net10/ColorzCore.deps.json',
+            'artifacts/package/net10/ColorzCore.runtimeconfig.json'
+          )) {
+            if (-not (Test-Path $requiredPath)) {
+              throw "Missing publish artifact: $requiredPath"
+            }
+          }
+
       - name: Run tests
         if: runner.os == 'Windows'
         shell: pwsh

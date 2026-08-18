@@ -12,7 +12,7 @@ Building requires the .NET 10 SDK:
 dotnet build ColorzCore/ColorzCore.sln -c Release
 ```
 
-Release archives contain the .NET 10 library in `net10` and the .NET Framework 4.8 compatibility executable in `net48`.
+Release archives contain the runnable .NET 10 apphost payload in `net10` and the .NET Framework 4.8 compatibility executable in `net48`.
 
 A rewriting of Core.exe for [Event Assembler](https://github.com/TimoVesalainen/Event-Assembler).
 
