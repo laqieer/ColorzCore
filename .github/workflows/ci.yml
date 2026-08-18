@@ -24,16 +24,23 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 10.0.x
 
-      - name: Build libraries
+      - name: Build release payload
         shell: pwsh
         run: |
-          dotnet publish ColorzCore/ColorzCore.csproj -c Release -o artifacts/package/net6
+          dotnet publish ColorzCore/ColorzCore.csproj -c Release -o artifacts/package/net10
           dotnet build ColorzCore/ColorzCore.Framework.csproj -c Release
           New-Item -ItemType Directory -Force artifacts/package/net48 | Out-Null
           Copy-Item ColorzCore/bin/Framework/Release/net48/* artifacts/package/net48 -Recurse -Force
           Copy-Item README.md artifacts/package/
+
+      - name: Run tests
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          python Tests/test_test_runner.py
+          python Tests/run_tests.py artifacts/package/net48/ColorzCore.exe
 
       - name: Package artifact
         shell: pwsh
