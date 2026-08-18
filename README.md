@@ -58,6 +58,25 @@ Having `LabelName:` brings in `LabelName` as an identifier which evaluates to wh
 ## Special Token(s)
 `currentOffset` (case insensitive) always gets evaluated to the current offset of the assembler.
 
+## Initializing the current offset
+
+The current offset starts uninitialized. Set it with `ORG` before a script writes data or
+uses `CURRENTOFFSET` to place new data. An included file does not initialize the offset
+for its caller.
+
+For example, a generated `.lyn.event` file should be included after the installer selects
+its free-space address:
+
+```event
+ORG 0x1F00000
+#include "C_Code.lyn.event"
+```
+
+Writing without a preceding `ORG` intentionally emits `Writing before initializing
+offset` and continues from offset `0`. With the default GBA base address, AA mode therefore
+produces a section such as `.ea_8000000`; the example above instead produces
+`.ea_9f00000`. Do not ignore this warning when writing to a ROM.
+
 ## Small Example
 
 Assuming the raw `WORD` assembles the word(s) provided after it, the following script writes 0xDEADBEEF at 0x1000, and writes 0x08001000 at 0x2000
