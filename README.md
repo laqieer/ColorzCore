@@ -4,6 +4,16 @@
 [Latest build artifacts](https://github.com/laqieer/ColorzCore/actions/workflows/ci.yml) ·
 [Latest release](https://github.com/laqieer/ColorzCore/releases/latest)
 
+## Building
+
+Building requires the .NET 10 SDK:
+
+```powershell
+dotnet build ColorzCore/ColorzCore.sln -c Release
+```
+
+Release archives contain the .NET 10 library in `net10` and the .NET Framework 4.8 compatibility executable in `net48`.
+
 A rewriting of Core.exe for [Event Assembler](https://github.com/TimoVesalainen/Event-Assembler).
 
 # Language Overview
