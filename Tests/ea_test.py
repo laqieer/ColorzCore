@@ -63,7 +63,7 @@ SUCCESS_MESSAGE = f"{CC_OKBLUE}SUCCESS{CC_ENDC}"
 FAILURE_MESSAGE = f"{CC_FAIL}FAILURE{CC_ENDC}"
 
 
-def run_tests(config : EATestConfig, test_cases : list[EATest]) -> None:
+def run_tests(config : EATestConfig, test_cases : list[EATest]) -> bool:
     success_count = 0
     test_count = len(test_cases)
 
@@ -76,9 +76,11 @@ def run_tests(config : EATestConfig, test_cases : list[EATest]) -> None:
         if success:
             success_count = success_count + 1
 
-    if success_count == test_count:
+    passed = success_count == test_count
+    if passed:
         print(f"{success_count}/{test_count} tests passed {SUCCESS_MESSAGE}")
 
     else:
         print(f"{success_count}/{test_count} tests passed {FAILURE_MESSAGE}")
 
+    return passed

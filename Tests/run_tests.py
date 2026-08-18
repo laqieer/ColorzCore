@@ -18,7 +18,7 @@ import statements, symbols, directives, expressions
 
 ALL_TEST_CASES = BASIC_TESTS + statements.TESTS + symbols.TESTS + directives.TESTS + expressions.TESTS
 
-def main(args):
+def main(args) -> int:
     import argparse
 
     arg_parse = argparse.ArgumentParser()
@@ -28,13 +28,13 @@ def main(args):
 
     args = arg_parse.parse_args(args[1:])
 
-    command : str = args.command
-    extra_params : str = args.extra_params
+    command: str = args.command
+    extra_params: str | None = args.extra_params
 
     test_cases = ALL_TEST_CASES
 
     config = Config(command, extra_params)
-    run_tests(config, test_cases)
+    return 0 if run_tests(config, test_cases) else 1
 
 
 if __name__ == '__main__':
