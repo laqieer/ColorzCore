@@ -4,8 +4,6 @@
     <OutputType>Library</OutputType>
     <Nullable>enable</Nullable>
     <LangVersion>9</LangVersion>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <BaseOutputPath>bin/Core</BaseOutputPath>
   </PropertyGroup>
 </Project>

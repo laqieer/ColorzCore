@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
     <BaseIntermediateOutputPath>obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**/*.cs</DefaultItemExcludes>
   </PropertyGroup>
 </Project>
